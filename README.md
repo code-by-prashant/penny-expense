@@ -22,15 +22,32 @@ penny-expense/
 ├── backend/
 │   ├── pom.xml
 │   └── src/main/java/com/penny/expense/
+│       src/main/java/com/penny/expense/
 │       ├── ExpenseApplication.java
 │       ├── controller/    ExpenseController.java
-│       ├── service/       ExpenseService.java
-│       │                  CategorizationService.java
-│       │                  AnomalyDetectionService.java
+│       ├── service/
+│       │   ├── ExpenseService.java                 ← Thin orchestrator (SOLID core)
+│       │   ├── CategorizationService.java          ← @Configuration: registers strategy bean
+│       │   ├── AnomalyDetectionService.java        ← @Configuration: registers strategy bean
+│       │   └── strategy/                           ← OCP/DIP: all interfaces + impls
+│       │       ├── CategorizationStrategy.java              ← Interface (OCP/ISP)
+│       │       ├── KeywordCategorizationStrategy.java       ← Impl (OCP)
+│       │       ├── AnomalyDetectionStrategy.java            ← Interface (OCP/ISP)
+│       │       ├── MeanMultiplierAnomalyStrategy.java       ← Impl (OCP)
+│       │       ├── ExpenseFileParser.java                   ← Interface (SRP/OCP)
+│       │       ├── CsvExpenseParser.java                    ← Impl: CSV parsing (SRP)
+│       │       ├── DashboardAssembler.java                  ← Interface (SRP)
+│       │       └── DefaultDashboardAssembler.java           ← Impl: dashboard assembly (SRP)
+│       ├── mapper/
+│       │   └── ExpenseMapper.java                  ← Entity ↔ DTO conversion (SRP)
+│       ├── exception/
+│       │   ├── ExpenseNotFoundException.java       ← Domain exception → 404
+│       │   └── InvalidExpenseException.java        ← Domain exception → 400
 │       ├── repository/    ExpenseRepository.java
 │       ├── model/         Expense.java
 │       ├── dto/           ExpenseRequest / ExpenseResponse / DashboardResponse / CsvUploadResult
 │       └── config/        CorsConfig.java · GlobalExceptionHandler.java
+│
 └── frontend/
     ├── src/
     │   ├── api/        client.ts      (Axios typed API client)
