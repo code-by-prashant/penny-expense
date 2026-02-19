@@ -9,6 +9,6 @@ RUN mvn clean package -DskipTests -q
 # ── Runtime stage ─────────────────────────────────────────────────────────────
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-COPY --from=build /app/target/expense-service-*.jar app.jar
+COPY --from=build /app/target/penny-service-*.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
