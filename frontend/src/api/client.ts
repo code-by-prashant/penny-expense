@@ -2,7 +2,7 @@ import axios from 'axios';
 import type { Expense, ExpenseRequest, DashboardResponse, CsvUploadResult } from '../types';
 
 const client = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.API_BASE_URL || '/api',
   headers: { 'Content-Type': 'application/json' },
 });
 
