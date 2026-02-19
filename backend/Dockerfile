@@ -11,4 +11,6 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY --from=build /app/target/penny-service-*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+# Activate the prod Spring profile — picks up application-prod.properties
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "app.jar"]
